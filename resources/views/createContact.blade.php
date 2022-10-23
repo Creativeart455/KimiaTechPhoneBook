@@ -15,22 +15,22 @@
                                 <div class="form-group col-md-4">
                                     <label for="firstName">First Name:</label>
                                     <input name="firstName" type="text  " class="form-control" id="firstName"
-                                           placeholder="Albert">
+                                           placeholder="eg. Albert">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="lastName">Last Name:</label>
                                     <input name="lastName" type="text" class="form-control" id="lastName"
-                                           placeholder="Einstein">
+                                           placeholder="eg. Einstein">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="email">Email:</label>
                                     <input name="email" type="email" class="form-control" id="email"
-                                           placeholder="albert@einstein.com">
+                                           placeholder="eg. albert@einstein.com">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="phone">Phone No.:</label>
                                     <input name="phone" type="tel" class="form-control" id="phone"
-                                           placeholder="09121375102">
+                                           placeholder="eg. 09121375102">
                                 </div> <span class=" ">
                                     +
                                 </span>
@@ -38,7 +38,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input name="address" type="text" class="form-control" id="address" placeholder="1234 Valiasr St">
+                                <input name="address" type="text" class="form-control" id="address" placeholder="eg. 1234 Valiasr St">
                             </div>
                             <div class="form-group my-2">
                                 <button type="submit" class="btn btn-primary d-block ms-auto w-25">Add</button>

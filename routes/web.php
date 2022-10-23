@@ -21,7 +21,7 @@ Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //Route::resource('/home',[App\Http\Controllers\HomeController::class, 'index'])
-Route::resource( '/home', \App\Http\Controllers\ContactController::class, [
+Route::resource( '/contact', \App\Http\Controllers\ContactController::class, [
         'names' => [
             'index'   => 'contact.index',
             'create'  => 'contact.create',

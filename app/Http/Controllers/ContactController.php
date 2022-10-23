@@ -16,7 +16,6 @@ class ContactController extends Controller {
      */
     public function index() {
         $contacts = Contact::all();
-
         return view( 'home', compact( 'contacts' ) );
     }
 
@@ -69,7 +68,9 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit( $id ) {
-        return "view('editContact')";
+        $contact = Contact::where('id',$id)->with(['phones','addresses','emails'])->get()->first();
+        return view('editContact',compact('contact'));
+
     }
 
     /**
