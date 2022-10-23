@@ -9,11 +9,12 @@
                         <p>{{ __('Add A New Contact') }}</p>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form action="{{route('contact.store')}}" method="POST">
+                            @csrf
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="firstName">First Name:</label>
-                                    <input name="firstName" type="email" class="form-control" id="firstName"
+                                    <input name="firstName" type="text  " class="form-control" id="firstName"
                                            placeholder="Albert">
                                 </div>
                                 <div class="form-group col-md-4">
@@ -37,7 +38,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="1234 Valiasr St">
+                                <input name="address" type="text" class="form-control" id="address" placeholder="1234 Valiasr St">
                             </div>
                             <div class="form-group my-2">
                                 <button type="submit" class="btn btn-primary d-block ms-auto w-25">Add</button>

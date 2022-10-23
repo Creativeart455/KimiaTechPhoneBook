@@ -1,32 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <p>{{ __('Dashboard') }}</p>
-                    <p>{{ __('You are loged in!') }}</p>
-                </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <p>{{ __('Dashboard') }}</p>
+                        <p>{{ __('You are loged in!') }}</p>
+                    </div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    <div class="p-1 m-1 d-flex justify-content-between align-items-center">
-{{--                        href="{{route('')}}"--}}
-                        <a>albert einstien</a>
-                        <div>
-                            <button class="btn btn-warning">edit</button>
-                            <button class="btn btn-danger">delete</button>
-                        </div>
+                    <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        @foreach($contacts as $contact)
+                            <div class="p-1 m-1 d-flex justify-content-between align-items-center">
+                                <p>{{$contact->first_name}} . {{$contact->last_name}}</p>
+                                <sup>{{$contact->created_at}}</sup>
+                                <div class="d-flex">
+                                    <a class="btn btn-warning mx-1">edit</a>
+                                    <form action="{{route('contact.destroy',['home'=>$contact->id])}}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
