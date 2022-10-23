@@ -31,7 +31,7 @@
                                 <div class="form-group col-md-4">
                                     <label for="phone">Phone No.:</label>
                                     <input name="phone" type="tel" class="form-control" id="phone"
-                                           placeholder="09121375102" value="{{$contact->phones->first()->phone}}">
+                                           placeholder="09121375102" value="{{$contact->phones->first()->phoneNumber}}">
                                 </div> <span class=" ">
                                     +
                                 </span>

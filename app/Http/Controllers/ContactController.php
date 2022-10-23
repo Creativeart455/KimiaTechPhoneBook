@@ -15,7 +15,7 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $contacts = Contact::all();
+        $contacts = Contact::with(['phones','addresses','emails'])->get()->all();
         return view( 'home', compact( 'contacts' ) );
     }
 

@@ -9,7 +9,6 @@
                         <p>{{ __('Dashboard') }}</p>
                         <p>{{ __('You are loged in!') }}</p>
                     </div>
-
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -22,7 +21,7 @@
                         @foreach($contacts as $contact)
                             <div class="p-1 m-1 d-flex justify-content-between align-items-center">
                                 <p>{{$contact->first_name}} . {{$contact->last_name}}</p>
-                                <sup>{{$contact->created_at}}</sup>
+                                <sup>{{$contact->phones->first()->phoneNumber??'not available'}}</sup>
                                 <div class="d-flex">
                                     <a class="btn btn-warning mx-1" href="{{route('contact.edit',['contact'=>$contact->id])}}">edit</a>
                                     <form action="{{route('contact.destroy',['contact'=>$contact->id])}}" method="POST">
