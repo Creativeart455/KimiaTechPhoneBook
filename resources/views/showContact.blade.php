@@ -7,7 +7,6 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <p>{{ __('Contact Detail') }}</p>
-{{--                        <p>{{ __('You are loged in!') }}</p>--}}
                     </div>
 
                     <div class="card-body">
@@ -18,7 +17,28 @@
                         @endif
                         <div class="p-1 m-1 d-flex justify-content-between align-items-center">
                             {{--                        href="{{route('')}}"--}}
-                            <p>inside show blade</p>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">First</th>
+                                    <th scope="col">Last</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Address</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>{{$contact->first_name}}</td>
+                                    <td>{{$contact->last_name}}</td>
+                                    <td>{{$contact->phones->first()->phoneNumber??'not available'}}</td>
+                                    <td>{{$contact->emails->first()->email??'not available'}}</td>
+                                    <td>{{$contact->emails->first()->email??'not available'}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

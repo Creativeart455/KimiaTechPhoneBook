@@ -57,7 +57,8 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show( $id ) {
-        return view( 'showContact' );
+        $contact = Contact::where('id',$id)->get()->first();
+        return view( 'showContact' ,compact('contact'));
     }
 
     /**
