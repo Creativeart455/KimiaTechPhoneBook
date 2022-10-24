@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Email;
 use App\Models\Phone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller {
     /**
@@ -37,17 +38,33 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store( Request $request ) {
+        $validate = Validator::make($request->all(), [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+        ],[
+            'firstName.required' => 'Name is must.',
+        ]);
+        if($validate->fails()){
+            return back()->withErrors($validate->errors())->withInput();
+        }
         $contact             = new Contact();
         $contact->first_name = $request->firstName;
         $contact->last_name  = $request->lastName;
         $contact->save();
         foreach ( $request->phone as $phoneItem ) {
-            Contact::where( 'first_name', $request->firstName )->get()->first()->phones()->save( new Phone( [ 'phoneNumber' => $phoneItem ] ) );
+            if(isset($phoneItem)){
+                Contact::where( 'first_name', $request->firstName )->get()->first()->phones()->save( new Phone( [ 'phoneNumber' => $phoneItem ] ) );
+            }
         }
         foreach ( $request->email as $emailItem ) {
+            if(isset($emailItem))
             Contact::where( 'first_name', $request->firstName )->get()->first()->emails()->save( new Email( [ 'email' => $emailItem ] ) );
         }
         foreach ( $request->address as $addressItem ) {
+            if(isset($addressItem))
             Contact::where( 'first_name', $request->firstName )->get()->first()->addresses()->save( new Address( [ 'addressString' => $addressItem ] ) );
         }
 
@@ -95,7 +112,19 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, $id ) {
-        $contact                     = Contact::find( $id );
+        $validate = Validator::make($request->all(), [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+        ],[
+            'firstName.required' => 'Name is must.',
+        ]);
+        if($validate->fails()){
+            return back()->withErrors($validate->errors())->withInput();
+        }
+        $contact = Contact::find( $id );
         $contactPreviousPhonesModels = $contact->phones->where( 'contact_id', $id )->all();
         foreach ( $contactPreviousPhonesModels as $key => $phoneModel ) {
             $phoneModel->phoneNumber = $request->get( 'phone' )[ $key ];
@@ -107,7 +136,11 @@ class ContactController extends Controller {
         $diff          = $incomingCount - $previousCount;
         if ( $diff > 0 ) {
             for ( $i = $previousCount; $i < $incomingCount ; $i++ ) {
-                $contact->phones()->save( new Phone( [ 'phoneNumber' => $request->get( 'phone' )[ $i ] ] ) );
+                $goingIn = $request->get( 'phone' )[ $i ];
+                if(isset($goingIn))
+                {
+                    $contact->phones()->save( new Phone( [ 'phoneNumber' => $goingIn ] ) );
+                }
             }
         }
 
@@ -122,7 +155,11 @@ class ContactController extends Controller {
         $diff2          = $incomingCount2 - $previousCount2;
         if ( $diff2 > 0 ) {
             for ( $i = $previousCount2; $i < $incomingCount2 ; $i++ ) {
-                $contact->emails()->save( new Email( [ 'email' => $request->get( 'email' )[ $i ]  ] ) );
+                $goingIn2 = $request->get( 'email' )[ $i ];
+                if(isset($goingIn2))
+                {
+                    $contact->emails()->save( new Email( [ 'email' =>  $goingIn2 ] ) );
+                }
             }
         }
 
@@ -137,7 +174,11 @@ class ContactController extends Controller {
         $diff3          = $incomingCount3 - $previousCount3;
         if ( $diff3 > 0 ) {
             for ( $i = $previousCount3; $i < $incomingCount3 ; $i++ ) {
-                $contact->addresses()->save( new Address( [ 'addressString' => $request->get( 'address' )[ $i ] ] ) );
+                $goingIn3 = $request->get( 'address' )[ $i ];
+                if(isset($goingIn3))
+                {
+                    $contact->addresses()->save( new Email( [ 'email' =>  $goingIn3 ] ) );
+                }
 
             }
         }

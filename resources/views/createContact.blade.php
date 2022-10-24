@@ -18,28 +18,29 @@
                                 @method('PUT')
                             @endif
                             <div class="form-row">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label for="firstName">First Name:</label>
                                     <input name="firstName" type="text  " class="form-control my-1" id="firstName"
                                            placeholder="eg. Albert"
                                            value="{{isset($contact)?$contact->first_name : ''}}">
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label for="lastName">Last Name:</label>
                                     <input name="lastName" type="text" class="form-control my-1" id="lastName"
                                            placeholder="eg. Einstein"
                                            value="{{isset($contact)?$contact->last_name : ''}}">
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label for="email">Email:</label>
 
                                     <div class="d-flex align-items-center justify-content-between">
-                                        <div id="mother1">
+                                        <div id="mother1" style="position:relative;">
                                             @if(isset($contact))
                                                 @foreach($contact->emails as $emailModel)
                                                     <input name="email[]" type="email" class="form-control my-1" id="email"
                                                            placeholder="eg. albert@einstein.com"
-                                                           value="{{$emailModel->email}}">
+                                                           value="{{$emailModel->email}}"
+                                                    >
                                                 @endforeach
                                             @else
                                                 <input name="email[]" type="email" class="form-control my-1" id="email"
@@ -63,19 +64,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     <label for="phone">Phone No.:</label>
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div id="mother">
                                             @if(isset($contact))
                                                 @foreach($contact->phones as $dataModel)
                                                     <input name="phone[]" type="text" class="form-control my-1" id="phone"
-                                                           placeholder="eg. albert@einstein.com"
+                                                           placeholder="eg. 09121375109"
                                                            value="{{$dataModel->phoneNumber??'not available'}}">
                                                 @endforeach
                                             @else
                                                 <input name="phone[]" type="text" class="form-control my-1" id="phone"
-                                                       placeholder="eg. albert@einstein.com"
+                                                       placeholder="eg. 09121375109"
                                                        value="">
                                             @endif
                                         </div>
@@ -97,7 +98,7 @@
                                 </div>
 
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label for="address">Address</label>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div id="mother2">
