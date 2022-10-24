@@ -18,6 +18,7 @@
                         <div class="col mx-1">
                             <a href="{{route('contact.create')}}" class="btn btn-primary d-block ms-auto" style="width: 123px; margin-right: 2px">Create</a>
                         </div>
+                            <h1>MASTER OF THE PUPPETS</h1>
                         @foreach($contacts as $contact)
                             <div class="p-1 m-1 d-flex justify-content-between align-items-center">
                                 <p>{{$contact->first_name}} . {{$contact->last_name}}</p>
