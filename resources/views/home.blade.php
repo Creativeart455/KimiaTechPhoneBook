@@ -34,6 +34,8 @@
                                 </div>
                             </div>
                         @endforeach
+                            @dd()
+
                     </div>
                 </div>
             </div>

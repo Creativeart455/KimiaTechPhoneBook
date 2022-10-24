@@ -40,9 +40,17 @@ class ContactController extends Controller {
         $contact->first_name = $request->firstName;
         $contact->last_name  = $request->lastName;
         $contact->save();
-        Contact::where( 'first_name', $request->firstName )->get()->first()->phones()->save( new Phone( [ 'phoneNumber' => $request->phone ] ) );
-        Contact::where( 'first_name', $request->firstName )->get()->first()->emails()->save( new Email( [ 'email' => $request->email ] ) );
-        Contact::where( 'first_name', $request->firstName )->get()->first()->addresses()->save( new Address( [ 'addressString' => $request->address ] ) );
+        foreach ($request->phone as $phoneItem){
+            Contact::where( 'first_name', $request->firstName )->get()->first()->phones()->save( new Phone( [ 'phoneNumber' => $phoneItem ] ) );
+        }
+        foreach ($request->email as $emailItem){
+            Contact::where( 'first_name', $request->firstName )->get()->first()->emails()->save( new Email( [ 'email' => $emailItem ] ) );
+        }
+        foreach ($request->address as $addressItem){
+            Contact::where( 'first_name', $request->firstName )->get()->first()->addresses()->save( new Address( [ 'addressString' => $addressItem ] ) );
+        }
+
+
         $message = 'Contact successfully added to the database!';
 //        return view('home',compact("message"));
 //        return response()->json(['success' => 'success'], 200);
@@ -83,7 +91,32 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, $id ) {
-        //
+        $contact = Contact::find($id);
+        $contactPreviousPhonesModel = $contact->phones->where('contact_id',$id)->first();
+        $contactPreviousPhonesModel->phoneNumber = $request->get('phone');
+        $contactPreviousPhonesModel->save();
+//        $phoneNumberIdArray = array();
+//        foreach ($contactPreviousPhonesModels as $previousPhone) {
+//            $phoneNumberIdArray[] = $previousPhone->id;
+//        }
+        // Getting values from the blade template form
+        $contact->first_name =  $request->get('firstName');
+        $contact->last_name = $request->get('lastName');
+        $contact->save();
+//        if ($contact->phones === null) {
+//            $contact->phone()->save(new Phone($request->get('phone'))); // trigger created event
+//            // $contact->phone()->create($input);// trigger created event
+//        } else {
+//            $contact->phones->get()->first()->update($request->get('phone')); // trigger updated event
+//            // $contact->phone()->update($input); // will NOT trigger updated event
+//        }
+//        Contact::where( 'first_name', $request->firstName )->get()->first()->phones()->save( new Phone( [ 'phoneNumber' => $request->phone ] ) );
+//        Contact::where( 'first_name', $request->firstName )->get()->first()->emails()->save( new Email( [ 'email' => $request->email ] ) );
+//        Contact::where( 'first_name', $request->firstName )->get()->first()->addresses()->save( new Address( [ 'addressString' => $request->address ] ) );
+        $message = 'Contact successfully added to the database!';
+
+
+        return redirect()->route('contact.index');
     }
 
     /**

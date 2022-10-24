@@ -43,8 +43,9 @@
                                 value="{{$contact->addresses->first()->addressString}}">
                             </div>
                             <div class="form-group my-2">
-                                <button type="submit" class="btn btn-primary d-block ms-auto w-25">Add</button>
+                                <button type="submit" class="btn btn-primary d-block ms-auto w-25">Update</button>
                             </div>
+                            @dd()
                         </form>
                     </div>
                 </div>

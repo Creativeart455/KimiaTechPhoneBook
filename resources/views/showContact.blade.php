@@ -35,7 +35,8 @@
                                     <td>{{$contact->last_name}}</td>
                                     <td>{{$contact->phones->first()->phoneNumber??'not available'}}</td>
                                     <td>{{$contact->emails->first()->email??'not available'}}</td>
-                                    <td>{{$contact->emails->first()->email??'not available'}}</td>
+                                    <td>{{$contact->addresses->first()->addressString??'not available'}}</td>
+                                    @dd($contact)
                                 </tr>
                                 </tbody>
                             </table>
