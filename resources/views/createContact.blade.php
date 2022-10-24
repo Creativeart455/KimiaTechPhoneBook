@@ -5,32 +5,49 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
+                    {{--                                        @dd(isset($contact)?'daniel true':'daniel False')--}}
                     <div class="card-header d-flex justify-content-between">
                         <p>{{ __('Add A New Contact') }}</p>
                     </div>
                     <div class="card-body">
-                        <form action="{{route('contact.store')}}" method="POST">
+                        <form
+                            action="{{!isset($contact)? route('contact.store') : route('contact.update',['contact'=>$contact->id])}}"
+                            method="POST">
                             @csrf
+                            @if(isset($contact))
+                                @method('PUT')
+                            @endif
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="firstName">First Name:</label>
-                                    <input name="firstName" type="text  " class="form-control" id="firstName"
-                                           placeholder="eg. Albert">
+                                    <input name="firstName" type="text  " class="form-control my-1" id="firstName"
+                                           placeholder="eg. Albert"
+                                           value="{{isset($contact)?$contact->first_name : ''}}">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="lastName">Last Name:</label>
-                                    <input name="lastName" type="text" class="form-control" id="lastName"
-                                           placeholder="eg. Einstein">
+                                    <input name="lastName" type="text" class="form-control my-1" id="lastName"
+                                           placeholder="eg. Einstein"
+                                           value="{{isset($contact)?$contact->last_name : ''}}">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="email">Email:</label>
 
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div id="mother1">
-                                            <input name="email[]" type="email" class="form-control" id="email"
-                                                   placeholder="eg. albert@einstein.com">
+                                            @if(isset($contact))
+                                                @foreach($contact->emails as $emailModel)
+                                                    <input name="email[]" type="email" class="form-control my-1" id="email"
+                                                           placeholder="eg. albert@einstein.com"
+                                                           value="{{$emailModel->email}}">
+                                                @endforeach
+                                            @else
+                                                <input name="email[]" type="email" class="form-control my-1" id="email"
+                                                       placeholder="eg. albert@einstein.com"
+                                                       value="">
+                                            @endif
                                         </div>
-                                        <div class="btn btn-primary mx-1 myplusicon"
+                                        <div class="btn btn-warning mx-1 myplusicon"
                                              style="cursor:pointer; font-size: 2rem;" id="plus1">
                                             +
                                             <script>
@@ -38,6 +55,7 @@
                                                 plus1.addEventListener('click', function () {
                                                     const node1 = document.getElementById("email");
                                                     const clonedElement1 = node1.cloneNode(true);
+                                                    clonedElement1.value = "";
                                                     document.getElementById("mother1").appendChild(clonedElement1);
 
                                                 })
@@ -49,34 +67,53 @@
                                     <label for="phone">Phone No.:</label>
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div id="mother">
-                                            <input name="phone[]" type="tel" class="form-control" id="phone"
-                                                   placeholder="eg. 09121375102">
+                                            @if(isset($contact))
+                                                @foreach($contact->phones as $dataModel)
+                                                    <input name="phone[]" type="text" class="form-control my-1" id="phone"
+                                                           placeholder="eg. albert@einstein.com"
+                                                           value="{{$dataModel->phoneNumber??'not available'}}">
+                                                @endforeach
+                                            @else
+                                                <input name="phone[]" type="text" class="form-control my-1" id="phone"
+                                                       placeholder="eg. albert@einstein.com"
+                                                       value="">
+                                            @endif
                                         </div>
-                                        <div class="btn btn-primary mx-1" id="plus"
+                                        <div class="btn btn-warning mx-1 myplusicon" id="plus"
                                              style="cursor:pointer; font-size: 2rem;">
                                             +
-                                        <script>
-                                            let plus = document.getElementById('plus');
-                                            plus.addEventListener('click', function () {
-                                                const node = document.getElementById("phone");
-                                                const clonedPhone = node.cloneNode(true);
-                                                document.getElementById("mother").appendChild(clonedPhone);
+                                            <script>
+                                                let plus = document.getElementById('plus');
+                                                plus.addEventListener('click', function () {
+                                                    const node = document.getElementById("phone");
+                                                    const clonedPhone = node.cloneNode(true);
+                                                    clonedPhone.value = "";
+                                                    document.getElementById("mother").appendChild(clonedPhone);
 
-                                            })
-                                        </script>
+                                                })
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-md-4">
                                 <label for="address">Address</label>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div id="mother2">
-                                        <input name="address[]" type="text" class="form-control" id="address"
-                                               placeholder="eg. 1234 Valiasr St">
+                                        @if(isset($contact))
+                                            @foreach($contact->addresses as $dataModel)
+                                                <input name="address[]" type="text" class="form-control my-1" id="address"
+                                                       placeholder="eg. Los Angeles"
+                                                       value="{{$dataModel->addressString??'not available'}}">
+                                            @endforeach
+                                        @else
+                                            <input name="address[]" type="text" class="form-control my-1" id="address"
+                                                   placeholder="eg. Los Angeles"
+                                                   value="">
+                                        @endif
                                     </div>
-                                    <div class="btn btn-primary mx-1 myplusicon"
+                                    <div class="btn btn-warning mx-1 myplusicon"
                                          style="cursor:pointer; font-size: 2rem;" id="plus2">
                                         +
                                         <script>
@@ -84,6 +121,7 @@
                                             plus2.addEventListener('click', function () {
                                                 const node2 = document.getElementById("address");
                                                 const clonedElement2 = node2.cloneNode(true);
+                                                clonedElement2.value = "";
                                                 document.getElementById("mother2").appendChild(clonedElement2);
 
                                             })
@@ -93,10 +131,10 @@
 
                             </div>
                             <div class="form-group my-2">
-                                <button type="submit" class="btn btn-primary d-block ms-auto w-25">Add</button>
+                                <button type="submit"
+                                        class="btn btn-primary d-block ms-auto w-100">{{isset($contact)?'Update':'Insert'}}</button>
                             </div>
                         </form>
-                        @dd()
                     </div>
                 </div>
             </div>

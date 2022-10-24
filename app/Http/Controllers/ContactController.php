@@ -15,7 +15,8 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $contacts = Contact::with(['phones','addresses','emails'])->get()->all();
+        $contacts = Contact::with( [ 'phones', 'addresses', 'emails' ] )->get()->all();
+
         return view( 'home', compact( 'contacts' ) );
     }
 
@@ -40,13 +41,13 @@ class ContactController extends Controller {
         $contact->first_name = $request->firstName;
         $contact->last_name  = $request->lastName;
         $contact->save();
-        foreach ($request->phone as $phoneItem){
+        foreach ( $request->phone as $phoneItem ) {
             Contact::where( 'first_name', $request->firstName )->get()->first()->phones()->save( new Phone( [ 'phoneNumber' => $phoneItem ] ) );
         }
-        foreach ($request->email as $emailItem){
+        foreach ( $request->email as $emailItem ) {
             Contact::where( 'first_name', $request->firstName )->get()->first()->emails()->save( new Email( [ 'email' => $emailItem ] ) );
         }
-        foreach ($request->address as $addressItem){
+        foreach ( $request->address as $addressItem ) {
             Contact::where( 'first_name', $request->firstName )->get()->first()->addresses()->save( new Address( [ 'addressString' => $addressItem ] ) );
         }
 
@@ -65,8 +66,9 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show( $id ) {
-        $contact = Contact::where('id',$id)->get()->first();
-        return view( 'showContact' ,compact('contact'));
+        $contact = Contact::where( 'id', $id )->get()->first();
+
+        return view( 'showContact', compact( 'contact' ) );
     }
 
     /**
@@ -77,8 +79,10 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit( $id ) {
-        $contact = Contact::where('id',$id)->with(['phones','addresses','emails'])->get()->first();
-        return view('editContact',compact('contact'));
+        $contact = Contact::where( 'id', $id )->with( [ 'phones', 'addresses', 'emails' ] )->get()->first();
+
+        return view( 'createContact', compact( 'contact' ) );
+//        return view('editContact',compact('contact'));
 
     }
 
@@ -91,17 +95,60 @@ class ContactController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update( Request $request, $id ) {
-        $contact = Contact::find($id);
-        $contactPreviousPhonesModel = $contact->phones->where('contact_id',$id)->first();
-        $contactPreviousPhonesModel->phoneNumber = $request->get('phone');
-        $contactPreviousPhonesModel->save();
+        $contact                     = Contact::find( $id );
+        $contactPreviousPhonesModels = $contact->phones->where( 'contact_id', $id )->all();
+        foreach ( $contactPreviousPhonesModels as $key => $phoneModel ) {
+            $phoneModel->phoneNumber = $request->get( 'phone' )[ $key ];
+            $phoneModel->save();
+
+        }
+        $previousCount = count( $contactPreviousPhonesModels );
+        $incomingCount = count( $request->get( 'phone' ) );
+        $diff          = $incomingCount - $previousCount;
+        if ( $diff > 0 ) {
+            for ( $i = $previousCount; $i < $incomingCount ; $i++ ) {
+                $contact->phones()->save( new Phone( [ 'phoneNumber' => $request->get( 'phone' )[ $i ] ] ) );
+            }
+        }
+
+        $contactPreviousEmailModels = $contact->emails->where( 'contact_id', $id )->all();
+        foreach ( $contactPreviousEmailModels as $key => $dataModel ) {
+
+            $dataModel->email = $request->get( 'email' )[ $key ];
+            $dataModel->save();
+        }
+        $previousCount2 = count( $contactPreviousEmailModels );
+        $incomingCount2 = count( $request->get( 'email' ) );
+        $diff2          = $incomingCount2 - $previousCount2;
+        if ( $diff2 > 0 ) {
+            for ( $i = $previousCount2; $i < $incomingCount2 ; $i++ ) {
+                $contact->emails()->save( new Email( [ 'email' => $request->get( 'email' )[ $i ]  ] ) );
+            }
+        }
+
+
+        $contactPreviousAddressModels = $contact->addresses->where( 'contact_id', $id )->all();
+        foreach ( $contactPreviousAddressModels as $key => $dataModel ) {
+            $dataModel->addressString = $request->get( 'address' )[ $key ];
+            $dataModel->save();
+        }
+        $previousCount3 = count( $contactPreviousAddressModels );
+        $incomingCount3 = count( $request->get( 'address' ) );
+        $diff3          = $incomingCount3 - $previousCount3;
+        if ( $diff3 > 0 ) {
+            for ( $i = $previousCount3; $i < $incomingCount3 ; $i++ ) {
+                $contact->addresses()->save( new Address( [ 'addressString' => $request->get( 'address' )[ $i ] ] ) );
+
+            }
+        }
+//        $contactPreviousPhonesModel->phoneNumber = $request->get('phone');
 //        $phoneNumberIdArray = array();
 //        foreach ($contactPreviousPhonesModels as $previousPhone) {
 //            $phoneNumberIdArray[] = $previousPhone->id;
 //        }
         // Getting values from the blade template form
-        $contact->first_name =  $request->get('firstName');
-        $contact->last_name = $request->get('lastName');
+        $contact->first_name = $request->get( 'firstName' );
+        $contact->last_name  = $request->get( 'lastName' );
         $contact->save();
 //        if ($contact->phones === null) {
 //            $contact->phone()->save(new Phone($request->get('phone'))); // trigger created event
@@ -116,7 +163,7 @@ class ContactController extends Controller {
         $message = 'Contact successfully added to the database!';
 
 
-        return redirect()->route('contact.index');
+        return redirect()->route( 'contact.index' );
     }
 
     /**

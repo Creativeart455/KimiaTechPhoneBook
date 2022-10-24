@@ -33,10 +33,21 @@
                                     <th scope="row">1</th>
                                     <td>{{$contact->first_name}}</td>
                                     <td>{{$contact->last_name}}</td>
-                                    <td>{{$contact->phones->first()->phoneNumber??'not available'}}</td>
-                                    <td>{{$contact->emails->first()->email??'not available'}}</td>
-                                    <td>{{$contact->addresses->first()->addressString??'not available'}}</td>
-                                    @dd($contact)
+                                    <td>
+                                        @foreach($contact->phones->all() as $dataModel)
+                                             <div>{{$dataModel->phoneNumber ??'not available'}}</div>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach($contact->emails->all() as $dataModel)
+                                            <div>{{$dataModel->email ??'not available'}}</div>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach($contact->addresses->all() as $dataModel)
+                                            <div>{{$dataModel->addressString ??'not available'}}</div>
+                                        @endforeach
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
